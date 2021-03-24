@@ -41,11 +41,26 @@ function Objective (props) {
     updateObjective(title,event.target.value);
   }
 
+  const deleteObjective = () => {
+    fetch(`/objectives/${id}`, {
+      method: 'delete',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      } 
+    }).then(
+      props.updateCount()
+    );
+  }
+
   return (
     <React.Fragment>
       <div className="objective-container">
-        <input className="objective-title" onBlur={onTitleChange} placeholder="Objective name..." defaultValue={title}/>
-        <input className="objective-weight" onBlur={onWeightChange} placeholder="XX%" defaultValue={weight}/>
+        <div className="objective-infos">
+          <input className="objective-title" onBlur={onTitleChange} placeholder="Objective name..." defaultValue={title}/>
+          <input className="objective-weight" onBlur={onWeightChange} placeholder="XX%" defaultValue={weight}/>
+        </div>
+        <button className="delete-objective" onClick={deleteObjective}>Delete</button>
       </div>
     </React.Fragment>
   );

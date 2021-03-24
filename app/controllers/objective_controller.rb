@@ -26,5 +26,16 @@ class ObjectiveController < ApplicationController
         end
     end
 
+    def delete 
+        @objective = Objective.find_by(id: params[:id])
+
+        if @objective.destroy!
+            render json: {}, status: 200
+        else
+            render json: {}, status: 400
+        end
+
+    end
+
 
 end

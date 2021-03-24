@@ -20,6 +20,12 @@
      border: 2px solid black;
      margin-bottom: 10px;
      display: flex;
+     flex-direction: column;
+ }
+
+ .objective-infos {
+     display: flex;
+     width: 100%;
  }
 
  .objective-title {
@@ -31,9 +37,4 @@
      margin-left: auto;
      order: 2;
      width: 50px;
- }
-
- .objective-key-results {
-     height: 40px;
-     order: 3;
  }

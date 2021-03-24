@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/objectives', to: 'objective#index'
   post '/objectives', to: 'objective#create'
   put '/objectives/:id', to: 'objective#update'
+  delete '/objectives/:id', to: 'objective#delete'
   
   get '/keyresults', to: 'key_result#index'
   post '/keyresults', to: 'key_result#create'

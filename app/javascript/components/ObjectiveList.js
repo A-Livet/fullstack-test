@@ -21,6 +21,10 @@ const ObjectiveList = () => {
     )
   }
 
+  const updateCount = () => {
+    setCount(count-1);
+  }
+
   useEffect(() => {
     fetch('/objectives', {
       method: 'get',
@@ -40,7 +44,7 @@ const ObjectiveList = () => {
     <React.Fragment>
       <button onClick={addObjective}>+ Add objective</button>
       <div id="objectives">{objectives.map( objective => {
-        return <Objective title={objective.title} weight={objective.weight} id={objective.id} key={objective.id}/>
+        return <Objective title={objective.title} weight={objective.weight} id={objective.id} key={objective.id} updateCount={updateCount}/>
       })}</div> 
     </React.Fragment>
   );
