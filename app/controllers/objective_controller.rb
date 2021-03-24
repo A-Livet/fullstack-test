@@ -9,7 +9,7 @@ class ObjectiveController < ApplicationController
         @objective = Objective.new(title: params[:title],weight: params[:weight])
         if @objective.save
             respond_to do |format|
-                format.json { head :ok, objective: @objective }
+                format.json { head :ok, body: @objective }
             end
         else 
             render json: {}, status: 400
@@ -17,8 +17,13 @@ class ObjectiveController < ApplicationController
     end
 
     def update
+        @objective = Objective.find_by(id: params[:id])
         
-
+        if @objective.update(title: params[:title], weight: params[:weight])
+            render json: @objective
+        else 
+            render json: {}, status: 400
+        end
     end
 
 

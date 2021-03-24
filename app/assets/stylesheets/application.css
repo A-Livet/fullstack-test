@@ -13,3 +13,27 @@
  *= require_tree .
  *= require_self
  */
+
+ .objective-container {
+     width: 400px;
+     padding: 5px;
+     border: 2px solid black;
+     margin-bottom: 10px;
+     display: flex;
+ }
+
+ .objective-title {
+    margin-right: auto;
+     order: 1;
+ }
+
+ .objective-weight {
+     margin-left: auto;
+     order: 2;
+     width: 50px;
+ }
+
+ .objective-key-results {
+     height: 40px;
+     order: 3;
+ }
