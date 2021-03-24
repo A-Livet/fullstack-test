@@ -23,17 +23,31 @@
      flex-direction: column;
  }
 
- .objective-infos {
+ .key-result-container {
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.delete-key-result {
+    order: 3;
+    margin-right: auto;
+}
+
+ .infos {
      display: flex;
      width: 100%;
  }
 
- .objective-title {
+ .title {
     margin-right: auto;
      order: 1;
  }
 
- .objective-weight {
+ .weight {
      margin-left: auto;
      order: 2;
      width: 50px;

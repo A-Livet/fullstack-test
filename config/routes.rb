@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   
   get '/keyresults', to: 'key_result#index'
   post '/keyresults', to: 'key_result#create'
-
+  put '/keyresults/:id', to: 'key_result#update'
+  delete '/keyresults/:id', to: 'key_result#delete'
+  get '/keyresults/objectives/:id', to:'key_result#get_from_objective'
 
 end

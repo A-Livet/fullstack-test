@@ -1,17 +1,23 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import '../../assets/stylesheets/application.css'
+import KeyResult from "./KeyResult";
+import TitleAndWeight from "./TitleAndWeight";
 
+const HEADERS = {
+  'Accept': 'application/json',
+  'Content-type': 'application/json'
+}
 
 function Objective (props) {
 
   const [title,setTitle] = useState(props.title || "");
   const [weight,setWeight] = useState(props.weight || "");
+  const [keyResults,setKeyResults] = useState([]);
+  const [count, setCount] = useState(0);
   const [id] = useState(props.id) 
 
   const updateObjective = (title,weight) => {
-
-    console.log(title);
 
     fetch(`/objectives/${id}`, {
       method: 'put',
@@ -19,10 +25,7 @@ function Objective (props) {
         title: title,
         weight: weight
       }),
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      } 
+      headers: HEADERS
     }).then( response => {
       return response.json();
     }).then( json => {
@@ -31,35 +34,51 @@ function Objective (props) {
     })
   }
 
-  const onTitleChange = event => {
-    setTitle(event.target.value);
-    updateObjective(event.target.value,weight);
-  }
-
-  const onWeightChange = event => {
-    setWeight(event.target.value);
-    updateObjective(title,event.target.value);
-  }
+  useEffect(() =>{
+    fetch(`/keyresults/objectives/${id}`, {
+      method: 'get',
+      headers: HEADERS
+    }).then( response => {
+      return response.json();
+      }).then( json => {
+        console.log(json)
+        setKeyResults(json);
+    })
+  },[count])
 
   const deleteObjective = () => {
-    fetch(`/objectives/${id}`, {
+    fetch(`/objectives/${id}`, {  
       method: 'delete',
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      } 
+      headers: HEADERS
     }).then(
       props.updateCount()
     );
   }
 
+  const addKR = () => {
+    fetch('/keyresults', {
+      method: 'post',
+      body: JSON.stringify({
+        objective_id: id
+      }),
+      headers: HEADERS
+    }).then( response => {
+      setCount(count + 1);
+    })
+  }
+
+  const updateParent = () => {
+    setCount(count-1);
+  }
+
   return (
     <React.Fragment>
       <div className="objective-container">
-        <div className="objective-infos">
-          <input className="objective-title" onBlur={onTitleChange} placeholder="Objective name..." defaultValue={title}/>
-          <input className="objective-weight" onBlur={onWeightChange} placeholder="XX%" defaultValue={weight}/>
-        </div>
+        <TitleAndWeight title={title} weight={weight} updateFunction={updateObjective}/>
+        {keyResults.map( keyResult => {
+          return <KeyResult title={keyResult.title} weight={keyResult.weight} key={keyResult.id} id={keyResult.id} updateObjective={updateParent}/>
+        })}
+        <button className="add-key-result" onClick={addKR}>+ Add KR</button>
         <button className="delete-objective" onClick={deleteObjective}>Delete</button>
       </div>
     </React.Fragment>

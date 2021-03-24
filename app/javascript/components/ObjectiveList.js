@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react"
 
 import Objective from './Objective'
 
+const HEADERS = {
+  'Accept': 'application/json',
+  'Content-type': 'application/json'
+}
+
 const ObjectiveList = () => {
   
   const [objectives,setObjectives] = useState([]);
@@ -10,10 +15,7 @@ const ObjectiveList = () => {
   const addObjective = () => {
     fetch('/objectives', {
       method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      } 
+      headers: HEADERS
     })
       .then( response => {
       setCount(count + 1);
@@ -28,14 +30,10 @@ const ObjectiveList = () => {
   useEffect(() => {
     fetch('/objectives', {
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      } 
+      headers: HEADERS
     }).then( response => {
       return response.json();
       }).then( json => {
-        console.log(json)
         setObjectives(json);
       })
   }, [count])

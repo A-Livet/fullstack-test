@@ -14,7 +14,34 @@ class KeyResultController < ApplicationController
         else 
             render json: {}, status: 400
         end
+    end
 
+    def update
+        @key_result = KeyResult.find_by(id: params[:id])
+        @key_result.title = params[:title]
+        @key_result.weight = params[:weight]
+        
+        if @key_result.save!
+            render json: @key_result
+        else 
+            render json: {}, status: 400
+        end
+    end
+
+    def delete 
+        @key_result = KeyResult.find_by(id: params[:id])
+
+        if @key_result.destroy!
+            render json: {}, status: 200
+        else
+            render json: {}, status: 400
+        end
+
+    end
+
+    def get_from_objective
+        @key_results = Objective.find_by(id: params[:id]).key_results
+        render json: @key_results
     end
 
 end
