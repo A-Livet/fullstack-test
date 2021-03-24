@@ -1,0 +1,2 @@
+module KeyResultHelper
+end
