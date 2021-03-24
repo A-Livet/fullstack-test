@@ -9,12 +9,36 @@ function Objective (props) {
   const [weight,setWeight] = useState(props.weight || "");
   const [id] = useState(props.id) 
 
+  const updateObjective = (title,weight) => {
+
+    console.log(title);
+
+    fetch(`/objectives/${id}`, {
+      method: 'put',
+      body: JSON.stringify({
+        title: title,
+        weight: weight
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      } 
+    }).then( response => {
+      return response.json();
+    }).then( json => {
+        setTitle(json.title);
+        setWeight(json.weight);
+    })
+  }
+
   const onTitleChange = event => {
     setTitle(event.target.value);
+    updateObjective(event.target.value,weight);
   }
 
   const onWeightChange = event => {
     setWeight(event.target.value);
+    updateObjective(title,event.target.value);
   }
 
   return (
