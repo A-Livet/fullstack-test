@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { getObjectives, checkWeight } from "../storeActions";
+
 
 import Objective from './Objective'
 
@@ -9,8 +12,14 @@ const HEADERS = {
 
 const ObjectiveList = () => {
   
-  const [objectives,setObjectives] = useState([]);
   const [count, setCount] = useState(0);
+
+  const objectives = useSelector(state => state.objectives);
+  const weightMissing = useSelector(state => state.weightMissing)
+  const invalidWeight = useSelector(state => state.invalidWeight)
+
+
+  const dispatch = useDispatch();
 
   const addObjective = () => {
     fetch('/objectives', {
@@ -19,31 +28,33 @@ const ObjectiveList = () => {
     })
       .then( response => {
       setCount(count + 1);
-    }
-    )
-  }
-
-  const updateCount = () => {
-    setCount(count-1);
+    })
   }
 
   useEffect(() => {
-    fetch('/objectives', {
-      method: 'get',
-      headers: HEADERS
-    }).then( response => {
-      return response.json();
-      }).then( json => {
-        setObjectives(json);
-      })
+    dispatch(getObjectives())
+    dispatch(checkWeight())
   }, [count])
+
+  const updateObjectiveList = () => {
+    setCount(count-1)
+  }
+
+  let message = "";
+
+  if(weightMissing){
+    message = "Weights are missing on some KRs or objective"
+  } else if(invalidWeight) {
+    message = "You have some invalid weights!"
+  }
 
   return (
     <React.Fragment>
       <button onClick={addObjective}>+ Add objective</button>
       <div id="objectives">{objectives.map( objective => {
-        return <Objective title={objective.title} weight={objective.weight} id={objective.id} key={objective.id} updateCount={updateCount}/>
-      })}</div> 
+        return <Objective title={objective.title} weight={objective.weight} id={objective.id} key={objective.id} updateObjectiveList={updateObjectiveList}/>
+      })}</div>
+      { message}
     </React.Fragment>
   );
 }

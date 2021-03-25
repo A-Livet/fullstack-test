@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post '/objectives', to: 'objective#create'
   put '/objectives/:id', to: 'objective#update'
   delete '/objectives/:id', to: 'objective#delete'
+  get '/objectives/check', to: 'objective#check_weight'
   
   get '/keyresults', to: 'key_result#index'
   post '/keyresults', to: 'key_result#create'

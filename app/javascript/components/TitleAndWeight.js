@@ -2,11 +2,10 @@ import React, { useState } from "react"
 
 import '../../assets/stylesheets/application.css'
 
-
 function TitleAndWeight (props) {
 
-    const [title,setTitle] = useState(props.title || "");
-    const [weight,setWeight] = useState(props.weight || "");
+    const [title,setTitle] = useState(props.title);
+    const [weight,setWeight] = useState(props.weight);
 
 
     const onTitleChange = event => {
@@ -21,7 +20,7 @@ function TitleAndWeight (props) {
 
     return(
         <div className="infos">
-            <input className="title" onBlur={onTitleChange} placeholder="Objective name..." defaultValue={title}/>
+            <input className="title" onBlur={onTitleChange} placeholder={props.placeholder} defaultValue={title}/>
             <input className="weight" onBlur={onWeightChange} placeholder="XX%" defaultValue={weight}/>
         </div>
     )

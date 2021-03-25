@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react"
 import '../../assets/stylesheets/application.css'
 import KeyResult from "./KeyResult";
 import TitleAndWeight from "./TitleAndWeight";
+import { checkWeight } from '../storeActions';
+import { useDispatch } from "react-redux";
 
 const HEADERS = {
   'Accept': 'application/json',
@@ -15,7 +17,9 @@ function Objective (props) {
   const [weight,setWeight] = useState(props.weight || "");
   const [keyResults,setKeyResults] = useState([]);
   const [count, setCount] = useState(0);
-  const [id] = useState(props.id) 
+  const [id] = useState(props.id);
+
+  const dispatch = useDispatch();
 
   const updateObjective = (title,weight) => {
 
@@ -31,6 +35,7 @@ function Objective (props) {
     }).then( json => {
         setTitle(json.title);
         setWeight(json.weight);
+        dispatch(checkWeight());
     })
   }
 
@@ -41,7 +46,6 @@ function Objective (props) {
     }).then( response => {
       return response.json();
       }).then( json => {
-        console.log(json)
         setKeyResults(json);
     })
   },[count])
@@ -50,8 +54,10 @@ function Objective (props) {
     fetch(`/objectives/${id}`, {  
       method: 'delete',
       headers: HEADERS
-    }).then(
-      props.updateCount()
+    }).then( () => {
+      props.updateObjectiveList()
+      dispatch(checkWeight());
+    }
     );
   }
 
@@ -63,7 +69,8 @@ function Objective (props) {
       }),
       headers: HEADERS
     }).then( response => {
-      setCount(count + 1);
+      setCount(count + 1)
+      dispatch(checkWeight());
     })
   }
 
@@ -74,7 +81,7 @@ function Objective (props) {
   return (
     <React.Fragment>
       <div className="objective-container">
-        <TitleAndWeight title={title} weight={weight} updateFunction={updateObjective}/>
+        <TitleAndWeight title={title} weight={weight} updateFunction={updateObjective} placeholder="Objective Name..."/>
         {keyResults.map( keyResult => {
           return <KeyResult title={keyResult.title} weight={keyResult.weight} key={keyResult.id} id={keyResult.id} updateObjective={updateParent}/>
         })}

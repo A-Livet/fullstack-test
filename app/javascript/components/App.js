@@ -1,12 +1,17 @@
 import React from "react"
 import ObjectiveList from "./ObjectiveList"
 
+import {Provider} from 'react-redux'
 
-const App = () => {
+import configureStore from '../configureStore'
+
+const store =  configureStore();
+
+function App () {
     return (
-      <React.Fragment>
+      <Provider store={store}>
         <ObjectiveList/>
-      </React.Fragment>
+      </Provider>
     );
 }
 
