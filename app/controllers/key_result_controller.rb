@@ -18,8 +18,9 @@ class KeyResultController < ApplicationController
 
     def update
         @key_result = KeyResult.find_by(id: params[:id])
-        @key_result.title = params[:title]
-        @key_result.weight = params[:weight]
+        @key_result.title = params[:title] if params[:title]
+        @key_result.weight = params[:weight] if params[:weight]
+        @key_result.complete = params[:complete] if params[:complete]
         
         if @key_result.save!
             render json: @key_result

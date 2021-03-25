@@ -18,11 +18,11 @@ function Objective (props) {
   const [keyResults,setKeyResults] = useState([]);
   const [count, setCount] = useState(0);
   const [id] = useState(props.id);
+  const [completion,setCompletion] = useState(0);
 
   const dispatch = useDispatch();
 
   const updateObjective = (title,weight) => {
-
     fetch(`/objectives/${id}`, {
       method: 'put',
       body: JSON.stringify({
@@ -39,6 +39,17 @@ function Objective (props) {
     })
   }
 
+  const getCompletion = () => {
+    fetch(`/objectives/completion/${id}`, {
+      method: 'get',
+      headers: HEADERS
+    }).then( response => {
+      return response.json();
+    }).then( json => {
+        setCompletion(json.completion)
+    })
+  }
+
   useEffect(() =>{
     fetch(`/keyresults/objectives/${id}`, {
       method: 'get',
@@ -48,6 +59,7 @@ function Objective (props) {
       }).then( json => {
         setKeyResults(json);
     })
+    getCompletion();
   },[count])
 
   const deleteObjective = () => {
@@ -83,10 +95,11 @@ function Objective (props) {
       <div className="objective-container">
         <TitleAndWeight title={title} weight={weight} updateFunction={updateObjective} placeholder="Objective Name..."/>
         {keyResults.map( keyResult => {
-          return <KeyResult title={keyResult.title} weight={keyResult.weight} key={keyResult.id} id={keyResult.id} updateObjective={updateParent}/>
+          return <KeyResult title={keyResult.title} weight={keyResult.weight} isComplete={keyResult.complete} key={keyResult.id} id={keyResult.id} updateObjective={updateParent}/>
         })}
         <button className="add-key-result" onClick={addKR}>+ Add KR</button>
         <button className="delete-objective" onClick={deleteObjective}>Delete</button>
+        <span> completion : {completion}% </span>
       </div>
     </React.Fragment>
   );
