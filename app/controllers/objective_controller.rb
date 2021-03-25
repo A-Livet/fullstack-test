@@ -38,6 +38,20 @@ class ObjectiveController < ApplicationController
 
     end
 
+    def get_completion 
+        krs = KeyResult.where(objective_id: params[:id])
+
+        @completion = 0
+
+        krs.each do |kr|
+            @completion += kr.weight if kr.complete && kr.weight
+        end
+
+        render json: {completion: @completion}
+
+    end
+
+
     def check_weight
         @objectives = Objective.all
 

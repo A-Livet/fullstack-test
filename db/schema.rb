@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_24_144310) do
+ActiveRecord::Schema.define(version: 2021_03_25_095053) do
 
   create_table "key_results", force: :cascade do |t|
     t.string "title"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_03_24_144310) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "objective_id"
+    t.boolean "complete", default: false
     t.index ["objective_id"], name: "index_key_results_on_objective_id"
   end
 
